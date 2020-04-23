@@ -1,0 +1,1 @@
+{"exp": "experiments/seg_detector/totaltext_resnet50_deform_thre.yaml", "resume": "totaltext_resnet50", "result_dir": "./results/", "box_thresh": 0.6, "verbose": false, "no_verbose": false, "visualize": false, "resize": false, "polygon": true, "eager_show": false, "test_speed": false, "debug": false, "distributed": false, "local_rank": 0, "num_gpus": 1}

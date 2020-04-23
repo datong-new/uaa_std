@@ -1,0 +1,99 @@
+import torch
+from eval_helper import *
+import subprocess
+from icdar_dataset import ICDARDataset
+from attack_util import *
+from constant import *
+from util import *
+import random
+import numpy
+import numpy as np
+from constant import *
+from torch import nn
+from torchvision import transforms
+import cv2
+import os
+import sys
+sys.path.insert(0, "/data/shudeng/text_attack/attacks/EAST")
+from PIL import Image, ImageDraw
+from model import EAST
+from detect import resize_img, load_pil, get_boxes, plot_boxes, adjust_ratio
+from icdar_dataset import ICDARDataset
+
+VAR = 0.5
+
+class Model():
+    def __init__(self):
+        os.chdir("EAST")
+        model_path  = MODEL_PATH + 'east_vgg16.pth'
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = device
+        model = EAST().to(device)
+        model.load_state_dict(torch.load(model_path))
+        model.eval()
+        self.net = model
+        os.chdir(PWD)
+
+    def load_image(self, img_path, scale=1):
+        img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = load_pil(img).cuda()
+        img = nn.functional.interpolate(img, (1024, 1024))
+        return img
+
+    def tensor_to_image(self, t, mean=torch.tensor([0.5,0.5,0.5]), std=torch.tensor([0.5, 0.5, 0.5])):
+        t = t.squeeze().permute(1,2,0)
+        t = (t*std.cuda()) + mean.cuda()
+        img = t.detach().cpu().numpy()
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        return img
+
+    def score_map(self, img):
+        out, features = self.net(img)
+        score = out[0]
+        return score
+
+    def loss(self, score, mask, thresh=0.8):
+        while len(mask.shape) < 4:
+            mask = mask.unsqueeze(0)
+        mask = nn.functional.interpolate(mask, score.shape[2:])
+        l = 1/(1+torch.exp(-1e2*(score-thresh)))
+        l = (l*mask).sum() / mask.sum()
+        return l
+
+    def zero_grad(self):
+        self.net.zero_grad()
+
+    def get_polygons(self, img_path, is_output_polygon=True):
+        img = self.load_image(img_path)
+        out, _ = self.net(img)
+        score, geo = out
+        boxes = get_boxes(score.squeeze(0).cpu().detach().numpy(), geo.squeeze(0).cpu().detach().numpy())
+#        boxes = adjust_ratio(boxes, ratio_w, ratio_h)
+        polys = []
+        if boxes is not None:
+            for box in boxes:
+                box = [[box[2*i], box[2*i+1]] for i in range(4)]
+                polys.append(box)
+            polys = numpy.array(polys)
+        return polys, img
+
+if __name__ == "__main__":
+    
+    dataset = ICDARDataset()
+    model = Model()
+    # single attack
+#    single_attack(model, dataset, res_dir=east_single_icdar, eps=15/255/VAR, iters=100, cost_thresh=0.007)           
+    
+    # universal attack
+#    universal_attack(model, dataset, res_dir=east_universal_icdar, epoches=6, eps=15/255/VAR, alpha=0.2)
+
+    eval_helper = Eval('icdar2015')
+
+    img_dir = IC15_TEST_IMAGES
+    res_dir = PWD+"res_east/txt/"
+
+    print(east_single_icdar)
+    eval_helper.eval(model, east_single_icdar, res_dir)
+#    eval_helper.eval(model, east_universal_icdar, res_dir)
+#    eval_helper.eval(model, IC15_TEST_IMAGES, res_dir)
