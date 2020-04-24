@@ -74,6 +74,7 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
             score_map = model.score_map(img)
             cost += model.loss(score_map, mask)
         model.zero_grad()
+        if isinstance(cost, int): continue
         cost.backward(retain_graph=True)
         cost_sum += cost.item()
         print("cost: ", cost)

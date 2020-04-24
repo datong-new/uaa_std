@@ -1,4 +1,5 @@
 import torch
+import argparse
 from eval_helper import *
 from torch import nn
 import subprocess
@@ -88,8 +89,35 @@ class Model():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--attack_type', help='attack type: single or universal')
+    args = parser.parse_args()
+    attack_type = args.attack_type
+
     model = Model()
     dataset = ICDARDataset()
+#    dataset = TotalText()
+    #eval_helper = Eval('total_text')
+    eval_helper = Eval('icdar2015')
+    res_dir = PWD+"res_textbox/txt/"
+
+    eps = range(5, 15, 2)
+
+    if attack_type == "single":
+        # single attack for different epsilon
+        for ep in eps:
+            img_dir = PWD+"res_textbox/single_icdar/{}/".format(ep)
+            single_attack(model, dataset, res_dir=img_dir, eps=ep/255/VAR, iters=100, cost_thresh=0.001)
+            res = eval_helper.eval(model, img_dir, res_dir)
+            with open(img_dir + "../eps.txt", "a") as f: f.write("{}: {}\n".format(ep, res))
+    elif attack_type == "universal":
+        for ep in eps:
+            img_dir = PWD+"res_textbox/universal_icdar/{}/".format(ep)
+            universal_attack(model, dataset, res_dir=img_dir, epoches=7, eps=ep/255/VAR, alpha=0.2)
+            res = eval_helper.eval(model, img_dir, res_dir)
+            with open(img_dir + "../u_eps.txt", "a") as f: f.write("{}: {}\n".format(ep, res))
+
+    exit(0)
 
     # single attack
 #    single_attack(model, dataset, res_dir=textbox_single_icdar, eps=15/255/VAR, iters=100, cost_thresh=0.007)           

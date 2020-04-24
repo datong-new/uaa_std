@@ -1,8 +1,9 @@
+import argparse
 import torch
 from attack_util import *
 from eval_helper import *
-from eval_helper import *
 from totaltext_dataset import TotalText
+from icdar_dataset import ICDARDataset
 import torch.backends.cudnn as cudnn
 from constant import *
 import sys
@@ -18,7 +19,6 @@ import cv2
 import craft_utils
 from craft import CRAFT
 from collections import OrderedDict
-from test import test_net
 
 ROOT_PATH = PWD + "CRAFT_pytorch/"
 var =[0.229, 0.224, 0.225]
@@ -109,29 +109,33 @@ class Model():
 
 
 if __name__ == "__main__":
-    model = Model("total_text")
-    dataset = TotalText()
-    single_attack_totaltext_dir = "res_craft/single_totaltext/"
-    universal_attack_totaltext_dir = "res_craft/universal_totaltext/"
-    txt_dir = "res_craft/txt/" 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--attack_type', help='attack type: single or universal')
+    args = parser.parse_args()
+    attack_type = args.attack_type
+    
+    
+    model = Model(resume='icdar2015')
 
-    # single attack
-    #single_attack(model, dataset, res_dir=PWD+single_attack_totaltext_dir, eps=15/255/VAR, iters=300, cost_thresh=0.07)
-
-    # universal attack
-#    universal_attack(model, dataset, res_dir=PWD+universal_attack_totaltext_dir, epoches=30, eps=15/255/VAR, alpha=0.2)
-#    perturbation = torch.load(PWD+universal_attack_totaltext_dir+"perturbation.pt")
-#    model.generate_universal_examples(dataset, perturbation, res_dir=universal_attack_totaltext_dir)
-#    exit(0)
-
-    # eval
-    eval_helper = Eval('total_text')
-    img_dir = TOTALTEXT_TEST_IMAGES
-    img_dir = "/data/totaltext/totaltext/Images/resize/"
+    dataset = ICDARDataset()
+#    dataset = TotalText()
+    #eval_helper = Eval('total_text')
+    eval_helper = Eval('icdar2015')
     res_dir = PWD+"res_craft/txt/"
+    eps = range(5, 15, 2)
 
-    img_dir = PWD+"res_craft/single_totaltext/"
-    img_dir = universal_attack_totaltext_dir
-    #eval_helper.eval(model, img_dir, res_dir)
-    eval_helper.eval(model, db_single_totaltext, res_dir)
+    if attack_type == "single":
+        # single attack for different epsilon
+        for ep in eps:
+            img_dir = PWD+"res_craft/single_icdar/{}/".format(ep)
+            single_attack(model, dataset, res_dir=img_dir, eps=ep/255/VAR, iters=100, cost_thresh=0.001)
+            res = eval_helper.eval(model, img_dir, res_dir)
+            with open(img_dir + "../eps.txt", "a") as f: f.write("{}: {}\n".format(ep, res))
+    elif attack_type == "universal":
+        for ep in eps:
+            img_dir = PWD+"res_craft/universal_icdar/{}/".format(ep)
+            universal_attack(model, dataset, res_dir=img_dir, epoches=7, eps=ep/255/VAR, alpha=0.2)
+            res = eval_helper.eval(model, img_dir, res_dir)
+            with open(img_dir + "../u_eps.txt", "a") as f: f.write("{}: {}\n".format(ep, res))
+
 

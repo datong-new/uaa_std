@@ -1,4 +1,4 @@
-PWD = "/data/shudeng/text_attack/attacks/"
+PWD = "/data/attacks/"
 
 MODEL_PATH = PWD + "models/"
 
@@ -8,6 +8,8 @@ TOTALTEXT_TEST_IMAGES = "/data/totaltext/totaltext/Images/Test/"
 craft_res_dir = PWD + "res_craft/"
 craft_universal_totaltext = craft_res_dir + "universal_totaltext/"
 craft_single_totaltext = craft_res_dir + "single_totaltext/"
+craft_universal_icdar = craft_res_dir + "universal_icdar/"
+craft_single_icdar = craft_res_dir + "single_icdar/"
 
 db_res_dir = PWD + "res_db/"
 db_universal_totaltext = db_res_dir + "universal_totaltext/"

@@ -5,7 +5,6 @@ from polygon_fast import iou
 from polygon_fast import iod
 import sys
 
-print(sys.argv[1])
 """
 Input format: y0,x0, ..... yn,xn. Each detection is separated by the end of line token ('\n')'
 """
@@ -56,7 +55,6 @@ global_num_of_det = 0
 
 for input_id in allInputs:
     if (input_id != '.DS_Store'):
-        print(input_id)
         detections = input_reading_mod(input_dir, input_id)
         groundtruths = gt_reading_mod(gt_dir, input_id)
         detections = detection_filtering(detections, groundtruths) #filtering detections overlaps with DC area
