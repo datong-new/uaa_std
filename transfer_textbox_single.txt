@@ -1,0 +1,6 @@
+textbox-original:	 Calculated!{"precision": 0.8369304556354916, "recall": 0.7790178571428571, "hmean": 0.806936416184971, "AP": 0}
+textbox-ensemble:	 Calculated!{"precision": 0.8142857142857143, "recall": 0.38169642857142855, "hmean": 0.519756838905775, "AP": 0}
+textbox-east:	 Calculated!{"precision": 0.8398950131233596, "recall": 0.7142857142857143, "hmean": 0.7720144752714113, "AP": 0}
+textbox-textbox:	 Calculated!{"precision": 0.02097902097902098, "recall": 0.006696428571428571, "hmean": 0.01015228426395939, "AP": 0}
+textbox-craft:	 Calculated!{"precision": 0.8385416666666666, "recall": 0.71875, "hmean": 0.7740384615384616, "AP": 0}
+textbox-db:	 Calculated!{"precision": 0.8229665071770335, "recall": 0.38392857142857145, "hmean": 0.5235920852359208, "AP": 0}

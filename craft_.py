@@ -37,10 +37,12 @@ def copyStateDict(state_dict):
 
 
 class Model():
-    def __init__(self, resume="total_text"):
+    #def __init__(self, resume="total_text"):
+    def __init__(self, resume="icdar2015"):
         self.net = CRAFT()
         self.refine_net = RefineNet()
-        self.load_net()
+        if resume == "icdar2015": self.load_net(MODEL_PATH+"craft_ic15_20k.pth")
+        else: self.load_net(MODEL_PATH+"craft_mlt_25k.pth")
 #        self.load_refine_net()
         self.net.eval()
         self.refine_net.eval()

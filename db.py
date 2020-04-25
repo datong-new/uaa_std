@@ -39,7 +39,7 @@ VAR = std.mean()
 
 
 class Model():
-    def __init__(self, resume="total_text"):
+    def __init__(self, resume="icdar2015"):
         print("resume" + resume)
 
         os.chdir("/data/shudeng/text_attack/attacks/DB")

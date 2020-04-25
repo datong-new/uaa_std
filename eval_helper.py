@@ -46,7 +46,7 @@ class Eval():
                     poly_str += "%d,%d," % (poly[i][1], poly[i][0])
                 else: 
                     poly_str += "%d,%d," % (poly[i][0], poly[i][1])
-
+            print("save file", save_dir + save_file)
             with open(save_dir + save_file, "a") as f:
                 f.write(poly_str[:-1]+"\n")
             print(poly_str[:-1])

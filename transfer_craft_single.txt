@@ -1,0 +1,6 @@
+craft-original:	 Calculated!{"precision": 0.8542141230068337, "recall": 0.8370535714285714, "hmean": 0.8455467869222097, "AP": 0}
+craft-ensemble:	 Calculated!{"precision": 0.5336322869955157, "recall": 0.53125, "hmean": 0.5324384787472036, "AP": 0}
+craft-east:	 Calculated!{"precision": 0.8395348837209302, "recall": 0.8058035714285714, "hmean": 0.8223234624145787, "AP": 0}
+craft-textbox:	 Calculated!{"precision": 0.6020066889632107, "recall": 0.8035714285714286, "hmean": 0.6883365200764818, "AP": 0}
+craft-craft:	 Calculated!{"precision": 0.07211538461538461, "recall": 0.033482142857142856, "hmean": 0.04573170731707317, "AP": 0}
+craft-db:	 Calculated!{"precision": 0.5339366515837104, "recall": 0.5267857142857143, "hmean": 0.5303370786516854, "AP": 0}

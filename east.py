@@ -44,6 +44,7 @@ class Model():
     def tensor_to_image(self, t, mean=torch.tensor([0.5,0.5,0.5]), std=torch.tensor([0.5, 0.5, 0.5])):
         t = t.squeeze().permute(1,2,0)
         t = (t*std.cuda()) + mean.cuda()
+        t = t * 255.0
         img = t.detach().cpu().numpy()
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         return img

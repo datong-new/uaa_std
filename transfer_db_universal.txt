@@ -1,0 +1,6 @@
+db-original:	 Calculated!{"precision": 0.8498727735368957, "recall": 0.7455357142857143, "hmean": 0.7942925089179548, "AP": 0}
+db-ensemble:	 Calculated!{"precision": 0.8513513513513513, "recall": 0.5625, "hmean": 0.6774193548387096, "AP": 0}
+db-east:	 Calculated!{"precision": 0.8580441640378549, "recall": 0.6071428571428571, "hmean": 0.711111111111111, "AP": 0}
+db-textbox:	 Calculated!{"precision": 0.783410138248848, "recall": 0.3794642857142857, "hmean": 0.5112781954887218, "AP": 0}
+db-craft:	 Calculated!{"precision": 0.847972972972973, "recall": 0.5602678571428571, "hmean": 0.6747311827956989, "AP": 0}
+db-db:	 Calculated!{"precision": 0.1906779661016949, "recall": 0.10044642857142858, "hmean": 0.13157894736842107, "AP": 0}
