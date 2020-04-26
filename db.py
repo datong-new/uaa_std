@@ -39,7 +39,8 @@ VAR = std.mean()
 
 
 class Model():
-    def __init__(self, resume="icdar2015"):
+    def __init__(self, resume="icdar2015", loss="thresh"):
+        self.loss_type = loss
         print("resume" + resume)
 
         os.chdir("/data/shudeng/text_attack/attacks/DB")
@@ -117,7 +118,9 @@ class Model():
         return score
 
     def loss(self, score, mask, thresh=0.19):
-        return loss(score, mask, thresh)
+        
+        if self.loss_type == "thresh": return loss(score, mask, thresh)
+        else: return ce_loss(score, mask)
 
     def zero_grad(self):
         self.net.zero_grad()

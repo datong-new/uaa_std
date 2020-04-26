@@ -27,7 +27,8 @@ var=torch.tensor([0.229,0.224,0.225])
 VAR = var.mean().item()
 
 class Model():
-    def __init__(self):
+    def __init__(self, loss="thresh"):
+        self.loss_type = loss
         self.net = RetinaNet()
         self.encoder = DataEncoder(0.4, 0.1)
         self._init_model()
@@ -68,7 +69,9 @@ class Model():
         cost = 0
         for m in score:
             m = m.sigmoid()
-            if m.max()>0.2: cost += loss(m, mask, thresh=0.2)
+            if m.max()>0.2: 
+                if self.loss_type == "thresh": cost += loss(m, mask, thresh=0.2)
+                else: cost += ce_loss(m, mask)
         return cost
 
     def get_polygons(self, img_path, is_output_polygon=True):

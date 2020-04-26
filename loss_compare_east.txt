@@ -1,0 +1,16 @@
+epoch:2, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.3073770491803279, "recall": 0.33482142857142855, "hmean": 0.3205128205128205, "AP": 0}, ep:10
+epoch:2, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.0575292230116892, "recall": 0.5602678571428571, "hmean": 0.10434421118270629, "AP": 0}, ep:10
+epoch:4, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.19917864476386038, "recall": 0.21651785714285715, "hmean": 0.20748663101604278, "AP": 0}, ep:10
+epoch:4, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.03989637305699482, "recall": 0.515625, "hmean": 0.07406219942289195, "AP": 0}, ep:10
+epoch:6, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.10022271714922049, "recall": 0.20089285714285715, "hmean": 0.1337295690936107, "AP": 0}, ep:10
+epoch:6, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.03588556308913511, "recall": 0.484375, "hmean": 0.0668206312548114, "AP": 0}, ep:10
+epoch:8, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.07991803278688525, "recall": 0.17410714285714285, "hmean": 0.10955056179775281, "AP": 0}, ep:10
+epoch:8, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.02963180284582661, "recall": 0.45089285714285715, "hmean": 0.05560908465244322, "AP": 0}, ep:10
+epoch:10, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.05105762217359591, "recall": 0.15625, "hmean": 0.07696536558548651, "AP": 0}, ep:10
+epoch:10, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.026714801444043323, "recall": 0.41294642857142855, "hmean": 0.050183100501831, "AP": 0}, ep:10
+epoch:12, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.0631786771964462, "recall": 0.14285714285714285, "hmean": 0.08761122518822723, "AP": 0}, ep:10
+epoch:12, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.029127634660421547, "recall": 0.44419642857142855, "hmean": 0.05467032967032967, "AP": 0}, ep:10
+epoch:14, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.04604051565377532, "recall": 0.11160714285714286, "hmean": 0.0651890482398957, "AP": 0}, ep:10
+epoch:14, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.0314214463840399, "recall": 0.421875, "hmean": 0.05848677084945073, "AP": 0}, ep:10
+epoch:16, loss:thresh, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.0511265164644714, "recall": 0.13169642857142858, "hmean": 0.07365792759051187, "AP": 0}, ep:10
+epoch:16, loss:crossentropy, attack_type:universal, model_name:east, result:Calculated!{"precision": 0.023949637334063228, "recall": 0.390625, "hmean": 0.04513217279174726, "AP": 0}, ep:10

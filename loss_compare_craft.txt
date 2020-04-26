@@ -1,0 +1,16 @@
+epoch:2, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.504950495049505, "recall": 0.5691964285714286, "hmean": 0.5351521511017838, "AP": 0}, ep:10
+epoch:2, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.5123239436619719, "recall": 0.6495535714285714, "hmean": 0.5728346456692913, "AP": 0}, ep:10
+epoch:4, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.2977941176470588, "recall": 0.36160714285714285, "hmean": 0.32661290322580644, "AP": 0}, ep:10
+epoch:4, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.35772357723577236, "recall": 0.5892857142857143, "hmean": 0.4451939291736931, "AP": 0}, ep:10
+epoch:6, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.32904884318766064, "recall": 0.2857142857142857, "hmean": 0.30585424133811223, "AP": 0}, ep:10
+epoch:6, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.3486238532110092, "recall": 0.5089285714285714, "hmean": 0.4137931034482759, "AP": 0}, ep:10
+epoch:8, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.25547445255474455, "recall": 0.234375, "hmean": 0.2444703143189756, "AP": 0}, ep:10
+epoch:8, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.26330532212885155, "recall": 0.41964285714285715, "hmean": 0.32358003442340794, "AP": 0}, ep:10
+epoch:10, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.23493975903614459, "recall": 0.17410714285714285, "hmean": 0.2, "AP": 0}, ep:10
+epoch:10, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.25359477124183005, "recall": 0.4330357142857143, "hmean": 0.31986809563066776, "AP": 0}, ep:10
+epoch:12, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.29411764705882354, "recall": 0.14508928571428573, "hmean": 0.19431988041853515, "AP": 0}, ep:10
+epoch:12, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.23255813953488372, "recall": 0.4017857142857143, "hmean": 0.2945990180032733, "AP": 0}, ep:10
+epoch:14, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.14210526315789473, "recall": 0.12053571428571429, "hmean": 0.13043478260869565, "AP": 0}, ep:10
+epoch:14, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.23430962343096234, "recall": 0.375, "hmean": 0.288412017167382, "AP": 0}, ep:10
+epoch:16, loss:thresh, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.16119402985074627, "recall": 0.12053571428571429, "hmean": 0.13793103448275862, "AP": 0}, ep:10
+epoch:16, loss:crossentropy, attack_type:universal, model_name:craft, result:Calculated!{"precision": 0.20322180916976457, "recall": 0.36607142857142855, "hmean": 0.2613545816733068, "AP": 0}, ep:10

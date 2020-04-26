@@ -38,7 +38,8 @@ def copyStateDict(state_dict):
 
 class Model():
     #def __init__(self, resume="total_text"):
-    def __init__(self, resume="icdar2015"):
+    def __init__(self, resume="icdar2015", loss="thresh"):
+        self.loss_type = loss
         self.net = CRAFT()
         self.refine_net = RefineNet()
         if resume == "icdar2015": self.load_net(MODEL_PATH+"craft_ic15_20k.pth")
@@ -74,7 +75,8 @@ class Model():
         return score_text
 
     def loss(self, score, mask, thresh=0.19):
-        return loss(score, mask, thresh)
+        if self.loss_type == "thresh": return loss(score, mask, thresh)
+        else: return ce_loss(score, mask)
 
     def zero_grad(self):
         self.net.zero_grad()

@@ -20,6 +20,17 @@ def loss(score, mask, thresh=0.8):
     l = (l*mask).sum() / (mask.sum()+1e-6)
     return l
 
+def ce_loss(score, mask):
+    while len(mask.shape) < 4:
+        mask = mask.unsqueeze(0)
+    while len(score.shape) < 4:
+        score = score.unsqueeze(0)
+    mask = nn.functional.interpolate(mask, score.shape[2:])
+    mask = mask.expand(score.shape)
+    l = -mask * torch.log(score+1e-2)
+    return (l*mask).sum() / (mask.sum()+1e-6)
+
+
 def random_resize(img, mask=None):
     height = int(random.uniform(500, 1000))//32*32
     width = int(random.uniform(500, 1000))//32*32

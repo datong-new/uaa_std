@@ -1,0 +1,30 @@
+epoch:2, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.046511627906976744, "recall": 0.07142857142857142, "hmean": 0.05633802816901408, "AP": 0}, ep:10
+epoch:2, loss:crossentropy, attack_type:universal, model_name:textbox, result:Error!
+b"Line in sample not valid. Sample: 20 Line: 493,544,491,558,490,592,490,582 Error: Points are not clockwise. The coordinates of bounding quadrilaterals have to be given in clockwise order. Regarding the correct interpretation of 'clockwise' remember that the image coordinate system used is the standard one, with the image origin at the upper left, the X axis extending to the right and Y axis extending downwards."
+, ep:10
+epoch:4, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.025096525096525095, "recall": 0.029017857142857144, "hmean": 0.026915113871635612, "AP": 0}, ep:10
+epoch:4, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.3597560975609756, "recall": 0.6584821428571429, "hmean": 0.46529968454258674, "AP": 0}, ep:10
+epoch:6, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.06363636363636363, "recall": 0.03125, "hmean": 0.041916167664670656, "AP": 0}, ep:10
+epoch:6, loss:crossentropy, attack_type:universal, model_name:textbox, result:Error!
+b"Line in sample not valid. Sample: 70 Line: 956,225,945,262,953,344,962,304 Error: Points are not clockwise. The coordinates of bounding quadrilaterals have to be given in clockwise order. Regarding the correct interpretation of 'clockwise' remember that the image coordinate system used is the standard one, with the image origin at the upper left, the X axis extending to the right and Y axis extending downwards."
+, ep:10
+epoch:8, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.11578947368421053, "recall": 0.024553571428571428, "hmean": 0.040515653775322284, "AP": 0}, ep:10
+epoch:8, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.25241864555848725, "recall": 0.640625, "hmean": 0.3621451104100947, "AP": 0}, ep:10
+epoch:10, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.0411522633744856, "recall": 0.022321428571428572, "hmean": 0.028943560057887122, "AP": 0}, ep:10
+epoch:10, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.27702702702702703, "recall": 0.640625, "hmean": 0.3867924528301887, "AP": 0}, ep:10
+epoch:12, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.05172413793103448, "recall": 0.020089285714285716, "hmean": 0.028938906752411574, "AP": 0}, ep:10
+epoch:12, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.3329519450800915, "recall": 0.6495535714285714, "hmean": 0.4402420574886535, "AP": 0}, ep:10
+epoch:14, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.03515625, "recall": 0.020089285714285716, "hmean": 0.025568181818181823, "AP": 0}, ep:10
+epoch:14, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.2967265047518479, "recall": 0.6272321428571429, "hmean": 0.4028673835125448, "AP": 0}, ep:10
+epoch:16, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.1, "recall": 0.026785714285714284, "hmean": 0.04225352112676056, "AP": 0}, ep:10
+epoch:16, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.24340425531914894, "recall": 0.6383928571428571, "hmean": 0.35243376463339493, "AP": 0}, ep:10
+epoch:2, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.06437768240343347, "recall": 0.06696428571428571, "hmean": 0.06564551422319473, "AP": 0}, ep:10
+epoch:2, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.2715827338129496, "recall": 0.6741071428571429, "hmean": 0.3871794871794872, "AP": 0}, ep:10
+epoch:4, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.11616161616161616, "recall": 0.05133928571428571, "hmean": 0.07120743034055727, "AP": 0}, ep:10
+epoch:4, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.21891288160833955, "recall": 0.65625, "hmean": 0.32830820770519265, "AP": 0}, ep:10
+epoch:6, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.10191082802547771, "recall": 0.03571428571428571, "hmean": 0.052892561983471066, "AP": 0}, ep:10
+epoch:6, loss:crossentropy, attack_type:universal, model_name:textbox, result:Error!
+b"Line in sample not valid. Sample: 70 Line: 906,269,895,239,925,333,941,359 Error: Points are not clockwise. The coordinates of bounding quadrilaterals have to be given in clockwise order. Regarding the correct interpretation of 'clockwise' remember that the image coordinate system used is the standard one, with the image origin at the upper left, the X axis extending to the right and Y axis extending downwards."
+, ep:10
+epoch:8, loss:thresh, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.034482758620689655, "recall": 0.029017857142857144, "hmean": 0.031515151515151524, "AP": 0}, ep:10
+epoch:8, loss:crossentropy, attack_type:universal, model_name:textbox, result:Calculated!{"precision": 0.26806083650190116, "recall": 0.6294642857142857, "hmean": 0.376, "AP": 0}, ep:10

@@ -24,7 +24,8 @@ from icdar_dataset import ICDARDataset
 VAR = 0.5
 
 class Model():
-    def __init__(self):
+    def __init__(self, loss="thresh"):
+        self.loss_type = loss
         model_path  = MODEL_PATH + 'east_vgg16.pth'
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.device = device
@@ -55,6 +56,9 @@ class Model():
         return score
 
     def loss(self, score, mask, thresh=0.8):
+        if self.loss_type == "thresh": return loss(score, mask, thresh)
+        else: return ce_loss(score, mask)
+
         while len(mask.shape) < 4:
             mask = mask.unsqueeze(0)
         mask = nn.functional.interpolate(mask, score.shape[2:])
