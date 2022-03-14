@@ -83,10 +83,18 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
 
         score_map = model.score_map(resize_img, mask)
         cost = model.loss(score_map, mask, use_feature_loss=use_feature_loss)
+
+
         if cost<cost_thresh or i==iters-1:
+        #if i==iters-1:
+            print("end", i)
             img = model.tensor_to_image(img)
             cv2.imwrite(os.path.join(res_dir, img_path.split("/")[-1]), img.astype(int))
             break
+
+
+        if use_feature_loss:
+            cost += model.feature_loss
         model.zero_grad()
         #cost.backward(retain_graph=True)
         cost.backward()
@@ -99,7 +107,7 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
 
 
 def single_attack(model, dataset, res_dir, eps=15/255/VAR, iters=300, alpha=0.2, cost_thresh=0.05, use_momentum=False, use_di=False, use_ti=False, use_feature_loss=False):
-    model.helper.get_original_features(model, dataset)
+    model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
 
     for i in range(len(dataset)):
         print("{}/{}".format(i, len(dataset)))
@@ -115,7 +123,7 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
     kernel_size=5
     if use_ti: gaussian_kernel = gkern(kernlen=kernel_size)
 
-    model.helper.get_original_features(model, dataset)
+    model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
 
     for i in range(epoches * len(dataset)):
         pertu.requires_grad = True

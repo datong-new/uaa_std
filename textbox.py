@@ -66,7 +66,7 @@ class Model():
     def score_map(self, img, mask=None):
         outputs, _, text_features, nontext_features = self.helper.forward(img, mask, textbox=True)
         self.feature_loss = self.helper.loss(text_features, nontext_features)
-        maps = outputs
+        maps, _ = outputs
         #maps = self.net(img, attack=True)
         return maps
 
@@ -77,8 +77,8 @@ class Model():
             if m.max()>0.2: 
                 if self.loss_type == "thresh": cost += loss(m, mask, thresh=0.2)
                 else: cost += ce_loss(m, mask)
-        if use_feature_loss:
-            cost += self.feature_loss
+        #if use_feature_loss:
+        #    cost += self.feature_loss
         return cost
 
     def get_polygons(self, img_path, is_output_polygon=True):

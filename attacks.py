@@ -54,8 +54,10 @@ if __name__ == "__main__":
     res_dir = os.path.join(PWD,
                            "res_{}".format(args.model),
                           attack_type,
-                          "momentum{}_di{}_ti{}_feature{}_eps{}".format(use_momentum, use_di, use_ti, use_feature_loss, eps))
+                          "momentum{}_di{}_ti{}_feature{}_eps{}".format(use_momentum, use_di, use_ti,                         use_feature_loss, eps))
     eps=eps/255/VAR
+    if 'featureTrue' in res_dir:
+        os.system("rm -rf {}".format(res_dir))
 
 
     if attack_type == "single":

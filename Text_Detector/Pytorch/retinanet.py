@@ -31,7 +31,7 @@ class RetinaNet(nn.Module):
             cls_pred = cls_pred.permute(0,2,3,1).contiguous().view(x.size(0),-1,self.num_classes)  # [N,H*W*num_anchors, num_classes]
             loc_preds.append(loc_pred)
             cls_preds.append(cls_pred)
-        if attack == True: return confidence_maps
+        if attack == True: return confidence_maps, fms
         return torch.cat(loc_preds,1), torch.cat(cls_preds,1)
 
     def _make_head(self, out_planes):

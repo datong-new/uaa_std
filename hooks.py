@@ -21,12 +21,13 @@ class Helper():
     def forward(self, img, mask=None, textbox=False):
         self.extract_features = []
         #img = nn.functional.interpolate(img, (224, 224))
-        import pdb; pdb.set_trace()
         if textbox:
             outputs = self.model(img.float().cuda(), attack=True)
         else:
             outputs = self.model(img.float().cuda())
-        features = self.extract_features
+
+
+        features = outputs[1]
         text_features, nottext_features = [], []
         if mask is None:
             self.extract_features = []
@@ -51,16 +52,16 @@ class Helper():
 
         self.extract_features = []
         #import pdb; pdb.set_trace()
-        return outputs, features, text_features[::3], nottext_features[::3]
+        return outputs, features, text_features, nottext_features
 
-    def get_original_features(self, model,  dataset):
+    def get_original_features(self, model,  dataset, textbox=False):
         for idx in range(len(dataset)):
             item = dataset.__getitem__(idx)
             img_path = item['filename']
             mask = item['mask'].cuda()
             img = model.load_image(img_path)
 
-            _, _, text_features, nontext_features = self.forward(img, mask)
+            _, _, text_features, nontext_features = self.forward(img, mask, textbox=textbox)
             if idx==0:
                 text_feature_len, nontext_feature_len = [0]*len(text_features), [0]*len(text_features)
                 text_feature_mean, nontext_feature_mean = [0]*len(text_features), [0]*len(text_features)
@@ -77,7 +78,7 @@ class Helper():
         self.original_nontext_features = nontext_feature_mean
 
     def loss(self, text_features, nontext_features):
-        loss_ = 0
+        feature_loss = 0
         def chamfer_loss(text_feature, original_text_feature):
             text_feature, original_text_feature = text_feature, original_text_feature
             distance_a2b = (text_feature[:,None, :] * original_text_feature[None, :,:]).sum(-1).min(-1)[0].mean()
@@ -86,7 +87,7 @@ class Helper():
 
 
         len_ = len(text_features)
-        weights = [(1/2)**(i-(len_//2)) for i in range(len_) ]
+        weights = [(1/2)**abs(i-(len_//2)) for i in range(len_) ]
 
 
         for i, (text_feature, nontext_feature) in enumerate(zip(text_features, nontext_features)):
@@ -99,14 +100,15 @@ class Helper():
 
             text_feature = text_feature / torch.sqrt((text_feature**2).sum(-1))[:, None]
             original_nontext_feature = original_nontext_feature / torch.sqrt((original_nontext_feature**2).sum())
+            original_text_feature = original_text_feature / torch.sqrt((original_text_feature**2).sum())
 
-            loss_ += -(1-(text_feature * original_text_feature[None, :]).sum(-1).mean())
+            loss_ = -(1-(text_feature * original_text_feature[None, :]).sum(-1).mean())
             loss_ += 1-(text_feature * original_nontext_feature[None, :]).sum(-1).mean()
-            loss_ = loss_*weights[i]
+            feature_loss += loss_*weights[i]
 
 
             #loss += [text_feature.abs().sum()]
-        return loss_
+        return feature_loss
             
     def extract_features_fn(self, image):
         """
@@ -139,10 +141,11 @@ class ResnetHelper(Helper):
     def __init__(self, model):
         self.model = model
         self.forward_rule_count = 0
-        self.register_hooks()
+#        self.register_hooks()
         super().__init__(model)
 
     def register_hooks(self):
+        return 
         def forward_hook_fn(module, inputs, outputs):
             self.forward_rule_count += 1
             if not self.forward_rule_count % 3 == 0: return
@@ -194,6 +197,7 @@ class VGGHelper(Helper):
         super().__init__(model)
 
     def register_hooks(self):
+        return
         def forward_hook_fn(module, inputs, outputs):
             self.extract_features += [outputs]
 
