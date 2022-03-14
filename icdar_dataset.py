@@ -12,8 +12,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
-IMG_DIR = "/data/shudeng/shudeng/IC15/test_images/"
-LABEL_DIR = "/data/shudeng/shudeng/IC15/Challenge4_Test_Task1_GT/"
+
+IMG_DIR = "/data/attacks/dataset/IC15/test_images/"
+LABEL_DIR = "/data/attacks/dataset/IC15/Challenge4_Test_Task1_GT/"
 
 class ICDARDataset(Dataset):
 
@@ -60,6 +61,7 @@ class ICDARDataset(Dataset):
 
     def __getitem__(self, idx):
         img_name = self.images[idx].split('.')[0]
+
         img, original_shape = self.load_image(os.path.join(self.img_dir, img_name+".jpg"))
         lines = []
         polygons = []

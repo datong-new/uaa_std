@@ -4,6 +4,7 @@ import os
 import cv2
 from constant import *
 from shapely.geometry import Polygon
+from evaluate.rrc_evaluation_funcs import validate_tl_line
 
 def area(poly):
     poly = Polygon(poly)
@@ -33,7 +34,7 @@ class Eval():
         if self.dataset == "total_text":
             save_file = "{}.txt".format(img_path.split("/")[-1][:-4])
         else: save_file = "res_{}.txt".format(img_path.split("/")[-1][:-4])
-        os.system("touch {}".format(save_dir + save_file))
+        os.system("touch {}".format(os.path.join(save_dir + save_file)))
         for poly in polys:
             poly_str = ""
             poly = np.array(poly)
@@ -45,8 +46,17 @@ class Eval():
                     poly_str += "%d,%d," % (poly[i][1], poly[i][0])
                 else: 
                     poly_str += "%d,%d," % (poly[i][0], poly[i][1])
-            print("save file", save_dir + save_file)
-            with open(save_dir + save_file, "a") as f:
+
+
+            try:
+                line = poly_str.replace("\r","").replace("\n","")
+                validate_tl_line(line[:-1], LTRB=False,withTranscription=False,withConfidence=False,imWidth=0,imHeight=0)
+            except Exception as e:
+                #import pdb; pdb.set_trace()
+                continue
+
+            print("save file", os.path.join(save_dir, save_file))
+            with open(os.path.join(save_dir, save_file), "a") as f:
                 f.write(poly_str[:-1]+"\n")
             print(poly_str[:-1])
 

@@ -11,7 +11,7 @@ import json
 from util import *
 import sys
 from constant import *
-sys.path.insert(0,"/data/shudeng/attacks/DB")
+sys.path.insert(0,"/data/attacks/DB")
 import argparse
 import os
 import torch
@@ -44,7 +44,7 @@ class Model():
         self.loss_type = loss
         print("resume" + resume)
 
-        os.chdir("/data/shudeng/attacks/DB")
+        os.chdir("/data/attacks/DB")
         with open("db_args.json", "r") as f:
             args = json.load(f)
 
@@ -120,6 +120,7 @@ class Model():
         return outputs
 
     def score_map(self, img, mask=None):
+        import pdb; pdb.set_trace()
         outputs, _, text_features, nontext_features = self.helper.forward(img, mask)
         self.feature_loss = self.helper.loss(text_features, nontext_features)
         out, score = outputs

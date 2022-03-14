@@ -1,2 +1,6 @@
 models
+__py*
+res_*
+*pyc
+
 dataset

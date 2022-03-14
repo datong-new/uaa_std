@@ -13,8 +13,12 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 
-IMG_DIR = "/data/totaltext/totaltext/Images/Test/"
-LABEL_DIR = "/data/totaltext/txt_format/Test/"
+#IMG_DIR = "/data/totaltext/totaltext/Images/Test/"
+#LABEL_DIR = "/data/totaltext/txt_format/Test/"
+
+IMG_DIR = "./dataset/totaltext/Test/"
+LABEL_DIR = "./dataset/totaltext/txt_format/Test/"
+"/data/totaltext/txt_format/Test/"
 
 def get_poly(line):
     items = line.split("[[")

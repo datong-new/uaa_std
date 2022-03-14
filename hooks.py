@@ -21,6 +21,7 @@ class Helper():
     def forward(self, img, mask=None, textbox=False):
         self.extract_features = []
         #img = nn.functional.interpolate(img, (224, 224))
+        import pdb; pdb.set_trace()
         if textbox:
             outputs = self.model(img.float().cuda(), attack=True)
         else:
@@ -52,10 +53,28 @@ class Helper():
         #import pdb; pdb.set_trace()
         return outputs, features, text_features[::3], nottext_features[::3]
 
-    def get_original_features(self, img, mask):
-        _, _, self.original_text_features, self.original_nontext_features = self.forward(img, mask)
-        self.original_text_features = [item.detach() for item in self.original_text_features]
-        self.original_nontext_features = [item.detach() for item in self.original_nontext_features]
+    def get_original_features(self, model,  dataset):
+        for idx in range(len(dataset)):
+            item = dataset.__getitem__(idx)
+            img_path = item['filename']
+            mask = item['mask'].cuda()
+            img = model.load_image(img_path)
+
+            _, _, text_features, nontext_features = self.forward(img, mask)
+            if idx==0:
+                text_feature_len, nontext_feature_len = [0]*len(text_features), [0]*len(text_features)
+                text_feature_mean, nontext_feature_mean = [0]*len(text_features), [0]*len(text_features)
+            for i in range(len(text_features)):
+                text_feature_mean[i] = ((text_feature_mean[i] * text_feature_len[i]) + \
+                        text_features[i].sum(0).detach()) / (text_feature_len[i]+len(text_features[i]))
+
+                nontext_feature_mean[i] = ((nontext_feature_mean[i] * nontext_feature_len[i]) + \
+                        nontext_features[i].sum(0).detach()) / (nontext_feature_len[i]+len(nontext_features[i]))
+
+                text_feature_len[i]+=len(text_features[i])
+                nontext_feature_len[i]+=len(nontext_features[i])
+        self.original_text_features = text_feature_mean
+        self.original_nontext_features = nontext_feature_mean
 
     def loss(self, text_features, nontext_features):
         loss_ = 0
@@ -66,9 +85,14 @@ class Helper():
             return (distance_a2b + distance_b2a).cuda()
 
 
+        len_ = len(text_features)
+        weights = [(1/2)**(i-(len_//2)) for i in range(len_) ]
+
+
         for i, (text_feature, nontext_feature) in enumerate(zip(text_features, nontext_features)):
             original_text_feature, original_nontext_feature = self.original_text_features[i], self.original_nontext_features[i]
-            original_text_feature, original_nontext_feature = original_text_feature.mean(0), original_nontext_feature.mean(0)
+
+            #original_text_feature, original_nontext_feature = original_text_feature.mean(0), original_nontext_feature.mean(0)
             # chamfer loss
             #loss += chamfer_loss(text_feature, original_text_feature)
 
@@ -78,6 +102,9 @@ class Helper():
 
             loss_ += -(1-(text_feature * original_text_feature[None, :]).sum(-1).mean())
             loss_ += 1-(text_feature * original_nontext_feature[None, :]).sum(-1).mean()
+            loss_ = loss_*weights[i]
+
+
             #loss += [text_feature.abs().sum()]
         return loss_
             

@@ -8,7 +8,7 @@ import sys
 from attack_util import *
 from icdar_dataset import ICDARDataset
 from util import *
-sys.path.insert(0, '/data/shudeng/attacks/Text_Detector/Pytorch/')
+sys.path.insert(0, '/data/attacks/Text_Detector/Pytorch/')
 from augmentations import Augmentation_inference
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
@@ -83,7 +83,9 @@ class Model():
 
     def get_polygons(self, img_path, is_output_polygon=True):
         img = self.load_image(img_path)
-        loc_preds, cls_preds = self.net(img)
+        outputs, _, text_features, nontext_features = self.helper.forward(img, mask=None)
+        loc_preds, cls_preds = outputs
+        #loc_preds, cls_preds = self.net(img)
         scale = 1024
         quad_boxes, labels, scores = self.encoder.decode(loc_preds.data.squeeze(0), cls_preds.data.squeeze(0), scale)
         quad_boxes /= scale

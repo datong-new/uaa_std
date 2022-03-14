@@ -15,7 +15,7 @@ from torchvision import transforms
 import cv2
 import os
 import sys
-sys.path.insert(0, "/data/shudeng/attacks/EAST")
+sys.path.insert(0, "/data/attacks/EAST")
 from PIL import Image, ImageDraw
 from model import EAST
 from detect import resize_img, load_pil, get_boxes, plot_boxes, adjust_ratio
@@ -81,7 +81,9 @@ class Model():
 
     def get_polygons(self, img_path, is_output_polygon=True):
         img = self.load_image(img_path)
-        out, _ = self.net(img)
+        #out, _ = self.net(img)
+        output, _,_,_ = self.helper.forward(img)
+        out, _ = output
         score, geo = out
         boxes = get_boxes(score.squeeze(0).cpu().detach().numpy(), geo.squeeze(0).cpu().detach().numpy())
 #        boxes = adjust_ratio(boxes, ratio_w, ratio_h)

@@ -1,10 +1,12 @@
 import torch
-PWD = "/data/shudeng/attacks/"
+import os
+PWD=os.getcwd() + "/"
 
 MODEL_PATH = PWD + "models/"
 
-IC15_TEST_IMAGES = "/data/shudeng/shudeng/IC15/test_images/"
-TOTALTEXT_TEST_IMAGES = "/data/totaltext/totaltext/Images/Test/"
+IC15_TEST_IMAGES = os.path.join(PWD, "dataset/IC15/test_images/")+"/"
+
+TOTALTEXT_TEST_IMAGES = os.path.join(PWD, "dataset/total_text/Test")+"/"
 
 craft_res_dir = PWD + "res_craft/"
 craft_universal_totaltext = craft_res_dir + "universal_totaltext/"

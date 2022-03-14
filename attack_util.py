@@ -59,6 +59,7 @@ def generate_universal_examples(model, dataset, perturbation, res_dir):
         cv2.imwrite(os.path.join(res_dir, item['filename'].split("/")[-1]), img)
 
 def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alpha=0.2, cost_thresh=0.05, use_momentum=False, use_di=False, use_ti=False, use_feature_loss=False):
+
     if not os.path.exists(res_dir): os.system("mkdir -p {}".format(res_dir))
     if os.path.exists(os.path.join(res_dir, img_path.split("/")[-1])): return
     original_mask = mask.unsqueeze(0).cuda()
@@ -67,7 +68,6 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
     pertur = torch.zeros(original_img.shape)
     kernel_size=5
     if use_ti: gaussian_kernel = gkern(kernlen=kernel_size)
-    model.helper.get_original_features(original_img, mask)
 
     for i in range(iters):
         pertur.requires_grad = True
@@ -79,6 +79,7 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
         if use_di:
             resize_img, mask = DI(img, mask)
         else: resize_img = img
+
 
         score_map = model.score_map(resize_img, mask)
         cost = model.loss(score_map, mask, use_feature_loss=use_feature_loss)
@@ -98,6 +99,8 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
 
 
 def single_attack(model, dataset, res_dir, eps=15/255/VAR, iters=300, alpha=0.2, cost_thresh=0.05, use_momentum=False, use_di=False, use_ti=False, use_feature_loss=False):
+    model.helper.get_original_features(model, dataset)
+
     for i in range(len(dataset)):
         print("{}/{}".format(i, len(dataset)))
         item = dataset.__getitem__(i)
@@ -111,6 +114,9 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
     cost_sum = 0
     kernel_size=5
     if use_ti: gaussian_kernel = gkern(kernlen=kernel_size)
+
+    model.helper.get_original_features(model, dataset)
+
     for i in range(epoches * len(dataset)):
         pertu.requires_grad = True
         perturbation = pertu.cuda()
@@ -125,7 +131,6 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
             img_path = item['filename']
             original_mask = item['mask'].cuda()
             img = model.load_image(img_path)
-            model.helper.get_original_features(img, original_mask)
 
 
             img = img + pert_map(perturbation, eps)

@@ -7,7 +7,7 @@ from icdar_dataset import ICDARDataset
 import torch.backends.cudnn as cudnn
 from constant import *
 import sys
-sys.path.insert(0, "/data/shudeng/attacks/CRAFT_pytorch")
+sys.path.insert(0, "/data/attacks/CRAFT_pytorch")
 from torch import nn
 import os
 import craft_utils
@@ -43,12 +43,13 @@ class Model():
         self.loss_type = loss
         self.net = CRAFT()
         self.refine_net = RefineNet()
+
         if resume == "icdar2015": self.load_net(MODEL_PATH+"craft_ic15_20k.pth")
         else: self.load_net(MODEL_PATH+"craft_mlt_25k.pth")
 #        self.load_refine_net()
         self.net.eval()
         self.refine_net.eval()
-        self.helper = VGGHelper(self.net)
+        #self.helper = VGGHelper(self.net)
 
     def load_net(self, resume_path=MODEL_PATH+"craft_mlt_25k.pth"):
         self.net.load_state_dict(copyStateDict(torch.load(resume_path)))
@@ -94,6 +95,9 @@ class Model():
     def get_polygons(self, img_path, is_output_polygon=True):
         img = self.load_image(img_path).cuda().float()
         with torch.no_grad():
+           # outputs, _, text_features, nontext_features = self.helper.forward(img, mask=None)
+           # self.feature_loss = self.helper.loss(text_features, nontext_features)
+           # y, features = outputs
             y, feature = self.net(img)
 
         # make score and link map
