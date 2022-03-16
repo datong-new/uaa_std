@@ -92,9 +92,9 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
             cv2.imwrite(os.path.join(res_dir, img_path.split("/")[-1]), img.astype(int))
             break
 
-
         if use_feature_loss:
             cost += model.feature_loss
+
         model.zero_grad()
         #cost.backward(retain_graph=True)
         cost.backward()
@@ -149,6 +149,11 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
                 img, mask = DI(img, mask)
             score_map = model.score_map(img, mask)
             cost += model.loss(score_map, mask, use_feature_loss=use_feature_loss)
+
+            if use_feature_loss:
+                cost += model.feature_loss
+            if torch.isnan(cost): 
+                import pdb; pdb.set_trace()
         model.zero_grad()
         if isinstance(cost, int): continue
         #cost.backward(retain_graph=True)

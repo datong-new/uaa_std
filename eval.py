@@ -59,21 +59,27 @@ if __name__ == "__main__":
 
     from parse_tmp import parse_tmp
     tmp_file = "tmp.txt"
-    res = parse_tmp(tmp_file)
-    res = {}
-#    img_dirs = ['/data/attacks/res_textbox/single/momentumFalse_diFalse_tiTrue_featureTrue_eps13', '/data/attacks/dataset/IC15/test_images']
+    res_dict = parse_tmp(tmp_file)
+    keys=[]
+    res_dirs=[]
     for img_dir in img_dirs:
         for model_name in model_names:
             print("model_name:{}".format(model_name))
             key = f"{model_name}: {img_dir}, Calculated"
-            if key in res: continue
+
+            if 'featureFalse' in key and key in res_dict: continue
 
             print(key)
+            keys+=[key]
             res_dir = "/data/shudeng/attacks/transfer_txt/{}/{}".format(img_dir.replace("/", "_"), model_name)
+            res_dirs += [res_dir]
 
             res = eval_helper.eval(get_model(model_name, dataset_name), img_dir, res_dir)
             with open(tmp_file, "a") as f: f.write("{}: {}, {}\n".format(model_name, img_dir, res))
-            if "Error" in res: exit(0)
+    print(keys)
+    print(len(keys))
+    print(res_dirs)
+    print(len(res_dirs))
             
             
         

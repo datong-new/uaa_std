@@ -120,16 +120,13 @@ class Model():
         return outputs
 
     def score_map(self, img, mask=None):
-        import pdb; pdb.set_trace()
         outputs, _, text_features, nontext_features = self.helper.forward(img, mask)
         self.feature_loss = self.helper.loss(text_features, nontext_features)
         out, score = outputs
-        return score
+        return out
 
     def loss(self, score, mask, thresh=0.19, use_feature_loss=False):
-        if use_feature_loss:
-            return loss(score, mask, thresh) + self.feature_loss
-        else: return loss(score, mask, thresh)
+        return loss(score, mask, thresh)
         
         #if self.loss_type == "thresh": return loss(score, mask, thresh)
         #else: return ce_loss(score, mask)

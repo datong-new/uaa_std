@@ -66,14 +66,19 @@ class Helper():
                 text_feature_len, nontext_feature_len = [0]*len(text_features), [0]*len(text_features)
                 text_feature_mean, nontext_feature_mean = [0]*len(text_features), [0]*len(text_features)
             for i in range(len(text_features)):
+
+
+
                 text_feature_mean[i] = ((text_feature_mean[i] * text_feature_len[i]) + \
                         text_features[i].sum(0).detach()) / (text_feature_len[i]+len(text_features[i]))
-
                 nontext_feature_mean[i] = ((nontext_feature_mean[i] * nontext_feature_len[i]) + \
                         nontext_features[i].sum(0).detach()) / (nontext_feature_len[i]+len(nontext_features[i]))
+                text_feature_mean[i] = torch.rand(text_feature_mean[i].shape, device=text_feature_mean[i].device)
+                nontext_feature_mean[i] = torch.rand(nontext_feature_mean[i].shape, device=nontext_feature_mean[i].device)
 
                 text_feature_len[i]+=len(text_features[i])
                 nontext_feature_len[i]+=len(nontext_features[i])
+            break
         self.original_text_features = text_feature_mean
         self.original_nontext_features = nontext_feature_mean
 
@@ -91,6 +96,9 @@ class Helper():
 
 
         for i, (text_feature, nontext_feature) in enumerate(zip(text_features, nontext_features)):
+            if len(text_feature)==0: continue
+
+
             original_text_feature, original_nontext_feature = self.original_text_features[i], self.original_nontext_features[i]
 
             #original_text_feature, original_nontext_feature = original_text_feature.mean(0), original_nontext_feature.mean(0)
@@ -101,6 +109,7 @@ class Helper():
             text_feature = text_feature / torch.sqrt((text_feature**2).sum(-1))[:, None]
             original_nontext_feature = original_nontext_feature / torch.sqrt((original_nontext_feature**2).sum())
             original_text_feature = original_text_feature / torch.sqrt((original_text_feature**2).sum())
+            #loss_ = text_feature.abs().sum(-1).mean()
 
             loss_ = -(1-(text_feature * original_text_feature[None, :]).sum(-1).mean())
             loss_ += 1-(text_feature * original_nontext_feature[None, :]).sum(-1).mean()

@@ -3,8 +3,8 @@ import os
 
 
 if __name__=="__main__":
-    gpu=2
-    model = "textbox"
+    gpu=1
+    model = "db"
     for use_di in ["False", "True"]:
         for use_ti in ["False", "True"]:
             for use_feature_loss in ['False', "True"]:

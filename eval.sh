@@ -1,2 +1,2 @@
 CUDA_VISIBLE_DEVICES=0 python eval.py --model db
-CUDA_VISIBLE_DEVICES=0 python eval.py --model textbox
+CUDA_VISIBLE_DEVICES=1 python eval.py --model textbox
