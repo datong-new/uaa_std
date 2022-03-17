@@ -10,6 +10,9 @@ import torch.nn.functional as F
 
 VAR=0.5
 
+def print(*args):
+    return
+
 def resize(img):
     return nn.functional.interpolate(img, (1024, 1024))
 
@@ -68,6 +71,7 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
     pertur = torch.zeros(original_img.shape)
     kernel_size=5
     if use_ti: gaussian_kernel = gkern(kernlen=kernel_size)
+    model.helper.get_original_features(model, dataset=None, img=original_img, mask=original_mask, textbox=("textbox" in res_dir))
 
     for i in range(iters):
         pertur.requires_grad = True
@@ -98,7 +102,7 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
         model.zero_grad()
         #cost.backward(retain_graph=True)
         cost.backward()
-        #print("cost: ", cost)
+        #print("cost: {}, feature_loss:{}".format(cost, model.feature_loss))
         grad = pertur.grad
         if use_ti: grad=TI(grad, gaussian_kernel, kernel_size=kernel_size)
 
@@ -107,7 +111,7 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
 
 
 def single_attack(model, dataset, res_dir, eps=15/255/VAR, iters=300, alpha=0.2, cost_thresh=0.05, use_momentum=False, use_di=False, use_ti=False, use_feature_loss=False):
-    model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
+    #model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
 
     for i in range(len(dataset)):
         print("{}/{}".format(i, len(dataset)))
@@ -117,13 +121,13 @@ def single_attack(model, dataset, res_dir, eps=15/255/VAR, iters=300, alpha=0.2,
 
 def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=0.2, use_momentum=False, use_di=False, use_ti=False, use_feature_loss=False):
     if not os.path.exists(res_dir): os.system("mkdir -p {}".format(res_dir))
-    batch_size = 2
+    batch_size = 1
     pertu = torch.zeros(1, 3, 1024, 1024)
     cost_sum = 0
     kernel_size=5
     if use_ti: gaussian_kernel = gkern(kernlen=kernel_size)
 
-    model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
+    #model.helper.get_original_features(model, dataset, textbox=("textbox" in res_dir))
 
     for i in range(epoches * len(dataset)):
         pertu.requires_grad = True
@@ -139,6 +143,7 @@ def universal_attack(model, dataset, res_dir, epoches=30, eps=15/255/VAR, alpha=
             img_path = item['filename']
             original_mask = item['mask'].cuda()
             img = model.load_image(img_path)
+            model.helper.get_original_features(model, dataset, img=img, mask=original_mask, textbox=("textbox" in res_dir))
 
 
             img = img + pert_map(perturbation, eps)

@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 import json
 import os
 from torch import nn
@@ -40,12 +41,16 @@ class Helper():
                 mask_ = nn.functional.interpolate(mask.unsqueeze(1), feature.shape[-2:])
             else:
                 mask_ = nn.functional.interpolate(mask.unsqueeze(0).unsqueeze(0), feature.shape[-2:])
-            mask_ = mask_.reshape(-1)!=0
+            mask_ = mask_.reshape(-1)
             feature = feature.squeeze().permute(1,2,0)
             feature = feature.view(-1, feature.shape[-1])
             
-            text_feature = feature[mask_]
-            nontext_feature = feature[mask_==0]
+            text_feature = feature[mask_>0.5]
+            nontext_feature = feature[mask_<0.5]
+
+
+            text_feature = text_feature
+            nontext_feature = nontext_feature
 
             text_features += [text_feature]
             nottext_features += [nontext_feature]
@@ -54,7 +59,25 @@ class Helper():
         #import pdb; pdb.set_trace()
         return outputs, features, text_features, nottext_features
 
-    def get_original_features(self, model,  dataset, textbox=False):
+    def get_original_features(self, model,  dataset, img=None, mask=None, textbox=False):
+        if img is not None:
+            self.original_text_features = []
+            self.original_nontext_features = []
+            _, _, original_text_features, original_nontext_features = self.forward(img, mask, textbox=textbox)
+            for i in range(len(original_text_features)):
+                b = np.random.choice(
+                        list(range(len(original_text_features[i]))), 
+                        min(500, len(original_text_features[i])), replace=False)
+                self.original_text_features += [original_text_features[i].detach()[b]]
+                b = np.random.choice(
+                        list(range(len(original_nontext_features[i]))), 
+                        min(500, len(original_nontext_features[i])), replace=False)
+                self.original_nontext_features += [original_nontext_features[i].detach()[b]]
+            return 
+
+
+
+
         for idx in range(len(dataset)):
             item = dataset.__getitem__(idx)
             img_path = item['filename']
@@ -66,8 +89,6 @@ class Helper():
                 text_feature_len, nontext_feature_len = [0]*len(text_features), [0]*len(text_features)
                 text_feature_mean, nontext_feature_mean = [0]*len(text_features), [0]*len(text_features)
             for i in range(len(text_features)):
-
-
 
                 text_feature_mean[i] = ((text_feature_mean[i] * text_feature_len[i]) + \
                         text_features[i].sum(0).detach()) / (text_feature_len[i]+len(text_features[i]))
@@ -84,10 +105,9 @@ class Helper():
 
     def loss(self, text_features, nontext_features):
         feature_loss = 0
-        def chamfer_loss(text_feature, original_text_feature):
-            text_feature, original_text_feature = text_feature, original_text_feature
-            distance_a2b = (text_feature[:,None, :] * original_text_feature[None, :,:]).sum(-1).min(-1)[0].mean()
-            distance_b2a = (original_text_feature[:,None, :] * text_feature[None, :,:]).sum(-1).min(-1)[0].mean()
+        def chamfer_distance(feature_a, feature_b):
+            distance_a2b = (1 - (feature_a[:,None, :] * feature_b[None, :,:]).sum(-1) ).min(-1)[0].mean()
+            distance_b2a = (1 - (feature_b[:,None, :] * feature_a[None, :,:]).sum(-1) ).min(-1)[0].mean()
             return (distance_a2b + distance_b2a).cuda()
 
 
@@ -98,26 +118,25 @@ class Helper():
         for i, (text_feature, nontext_feature) in enumerate(zip(text_features, nontext_features)):
             if len(text_feature)==0: continue
 
-
             original_text_feature, original_nontext_feature = self.original_text_features[i], self.original_nontext_features[i]
 
-            #original_text_feature, original_nontext_feature = original_text_feature.mean(0), original_nontext_feature.mean(0)
-            # chamfer loss
-            #loss += chamfer_loss(text_feature, original_text_feature)
+            b = np.random.choice(
+                    list(range(len(text_feature))), 
+                    min(1500, len(text_feature)), replace=False)
+            text_feature = text_feature[b]
 
 
             text_feature = text_feature / torch.sqrt((text_feature**2).sum(-1))[:, None]
-            original_nontext_feature = original_nontext_feature / torch.sqrt((original_nontext_feature**2).sum())
-            original_text_feature = original_text_feature / torch.sqrt((original_text_feature**2).sum())
-            #loss_ = text_feature.abs().sum(-1).mean()
+            original_text_feature = original_text_feature / torch.sqrt((original_text_feature**2).sum(-1))[:, None]
+            original_nontext_feature = original_nontext_feature / torch.sqrt((original_nontext_feature**2).sum(-1))[:, None]
+            try:
+                feature_loss -= chamfer_distance(text_feature, original_text_feature)
+                feature_loss += chamfer_distance(text_feature, original_nontext_feature)
+            except Exception:
+                continue
 
-            loss_ = -(1-(text_feature * original_text_feature[None, :]).sum(-1).mean())
-            loss_ += 1-(text_feature * original_nontext_feature[None, :]).sum(-1).mean()
-            feature_loss += loss_*weights[i]
-
-
-            #loss += [text_feature.abs().sum()]
         return feature_loss
+
             
     def extract_features_fn(self, image):
         """

@@ -19,8 +19,8 @@ def parse_tmp(tmp_file='./tmp.txt'):
 if __name__ == "__main__":
     tmp_file = "./tmp.txt"
     res = parse_tmp(tmp_file)
-    attack_type = "universal"
-#    attack_type = "single"
+    #attack_type = "universal"
+    attack_type = "single"
     a = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1], [1,1,0], [1, 1, 1]]
 
     s = ""
