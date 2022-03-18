@@ -74,9 +74,8 @@ class Model():
         cost = 0
         for m in score:
             m = m.sigmoid()
-            if m.max()>0.2: 
-                if self.loss_type == "thresh": cost += loss(m, mask, thresh=0.2)
-                else: cost += ce_loss(m, mask)
+            if self.loss_type == "thresh": cost += loss(m, mask, thresh=0.2)
+            else: cost += ce_loss(m, mask)
         #if use_feature_loss:
         #    cost += self.feature_loss
         return cost

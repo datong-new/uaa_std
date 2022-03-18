@@ -62,6 +62,8 @@ class Model():
         return score
 
     def loss(self, score, mask, thresh=0.8, use_feature_loss=False):
+        return loss(score, mask, thresh)
+
         if use_feature_loss:
             return loss(score, mask, thresh) + self.feature_loss
         else: return loss(score, mask, thresh)

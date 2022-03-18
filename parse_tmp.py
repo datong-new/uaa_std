@@ -19,7 +19,7 @@ def parse_tmp(tmp_file='./tmp.txt'):
 if __name__ == "__main__":
     tmp_file = "./tmp.txt"
     res = parse_tmp(tmp_file)
-    #attack_type = "universal"
+    attack_type = "universal"
     attack_type = "single"
     a = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1], [1,1,0], [1, 1, 1]]
 
@@ -28,7 +28,8 @@ if __name__ == "__main__":
 
     for target_model in ['east', 'textbox', 'craft', 'db']:
         s += target_model
-        for source_model in ['textbox', 'db']:
+        #for source_model in ['textbox', 'db']:
+        for source_model in ['east', 'craft']:
             for item in a:
                 di, ti, feature = item
                 di, ti, feature = bool(di), bool(ti), bool(feature)

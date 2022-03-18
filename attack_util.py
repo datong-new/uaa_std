@@ -89,8 +89,8 @@ def _single_attack(model, img_path, mask, res_dir, eps=15/255/VAR, iters=30, alp
         cost = model.loss(score_map, mask, use_feature_loss=use_feature_loss)
 
 
-        if cost<cost_thresh or i==iters-1:
-        #if i==iters-1:
+        #if cost<cost_thresh or i==iters-1:
+        if i==iters-1:
             print("end", i)
             img = model.tensor_to_image(img)
             cv2.imwrite(os.path.join(res_dir, img_path.split("/")[-1]), img.astype(int))

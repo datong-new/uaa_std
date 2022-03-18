@@ -28,7 +28,8 @@ class Helper():
             outputs = self.model(img.float().cuda())
 
 
-        features = outputs[1]
+        #features = outputs[1]
+        features = self.extract_features
         text_features, nottext_features = [], []
         if mask is None:
             self.extract_features = []
@@ -114,6 +115,9 @@ class Helper():
         len_ = len(text_features)
         weights = [(1/2)**abs(i-(len_//2)) for i in range(len_) ]
 
+        def normalize(feature):
+            return feature / ( torch.sqrt( (feature**2).sum(-1)  )[:, None] + 1e-8   )
+
 
         for i, (text_feature, nontext_feature) in enumerate(zip(text_features, nontext_features)):
             if len(text_feature)==0: continue
@@ -126,9 +130,9 @@ class Helper():
             text_feature = text_feature[b]
 
 
-            text_feature = text_feature / torch.sqrt((text_feature**2).sum(-1))[:, None]
-            original_text_feature = original_text_feature / torch.sqrt((original_text_feature**2).sum(-1))[:, None]
-            original_nontext_feature = original_nontext_feature / torch.sqrt((original_nontext_feature**2).sum(-1))[:, None]
+            text_feature = normalize( text_feature )
+            original_text_feature = normalize( original_text_feature )
+            original_nontext_feature = normalize( original_nontext_feature) 
             try:
                 feature_loss -= chamfer_distance(text_feature, original_text_feature)
                 feature_loss += chamfer_distance(text_feature, original_nontext_feature)
@@ -169,11 +173,10 @@ class ResnetHelper(Helper):
     def __init__(self, model):
         self.model = model
         self.forward_rule_count = 0
-#        self.register_hooks()
+        self.register_hooks()
         super().__init__(model)
 
     def register_hooks(self):
-        return 
         def forward_hook_fn(module, inputs, outputs):
             self.forward_rule_count += 1
             if not self.forward_rule_count % 3 == 0: return
@@ -225,7 +228,6 @@ class VGGHelper(Helper):
         super().__init__(model)
 
     def register_hooks(self):
-        return
         def forward_hook_fn(module, inputs, outputs):
             self.extract_features += [outputs]
 
@@ -234,7 +236,7 @@ class VGGHelper(Helper):
             for child_name, child in model.named_children():
                 if isinstance(child, nn.ReLU):
                 #if isinstance(child, nn.MaxPool2d):
-                    setattr(model, child_name, nn.ReLU())
+                    #setattr(model, child_name, nn.ReLU())
                     model._modules[child_name].register_forward_hook(forward_hook_fn)
                 else: replace_relu(child)
 

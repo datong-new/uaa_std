@@ -20,16 +20,13 @@ if __name__ == "__main__":
 
 
     
-    #model_name = 'textbox'
-    #img_dir = '/data/attacks/res_textbox/single/momentumFalse_diFalse_tiTrue_featureTrue_eps13'
-    #model_name = 'craft'
-    #img_dir="./dataset/IC15/test_images"
-    #res = eval_helper.eval(get_model(model_name, dataset_name), img_dir, res_dir)
-    #with open("tmp.txt", "a") as f: f.write("{}: {}, {}\n".format(model_name, img_dir, res))
+#    model_name = 'craft'
+#    img_dir="./dataset/IC15/test_images"
+#    res_dir = "/data/shudeng/attacks/transfer_txt/test/"
+#    res = eval_helper.eval(get_model(model_name, dataset_name), img_dir, res_dir)
+#    with open("tmp.txt", "a") as f: f.write("{}: {}, {}\n".format(model_name, img_dir, res))
+#    exit(0)
 
-    #img_dir="/data/attacks/res_db/single/momentumFalse_diFalse_tiFalse_featureFalse_eps13"
-    #res = eval_helper.eval(get_model(model_name, dataset_name), img_dir, res_dir)
-    #with open("tmp.txt", "a") as f: f.write("{}: {}, {}\n".format(model_name, img_dir, res))
 
 
 
@@ -37,25 +34,36 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default="db")
+    parser.add_argument('--attack_type', type=str, default="single")
+    parser.add_argument('--use_momentum', type=str, default="False")
+    parser.add_argument('--use_di', type=str, default="False")
+    parser.add_argument('--use_ti', type=str, default="False")
+    parser.add_argument('--use_feature_loss', type=str, default="False")
+    parser.add_argument('--partial_eval', type=str, default="False")
     args = parser.parse_args()
     model = args.model
 
-    img_dirs = [
-                 #f"/data/attacks/res_{model}/single/momentumFalse_diFalse_tiFalse_featureTrue_eps13/",
-                 #f"/data/attacks/res_{model}/universal/momentumFalse_diFalse_tiFalse_featureTrue_eps13/",
-               ]
+    img_dirs = []
 
-    for use_di in ["False", "True"]:
-        for use_ti in ["False", "True"]:
-            for use_feature_loss in ['False', 'True']:
-                for use_momentum in ['False']:
-                    for attack_type in ['single', 'universal']:
-                        save_dir = f"/data/attacks/res_{model}/{attack_type}/momentum{use_momentum}_di{use_di}_ti{use_ti}_feature{use_feature_loss}_eps13"
-                        if not(os.path.exists(save_dir) and len(os.listdir(save_dir))>=100): 
-                            import pdb; pdb.set_trace()
-                            continue
-                        img_dirs += [save_dir]
-
+    if args.partial_eval=='False':
+        for use_di in ["False", "True"]:
+            for use_ti in ["False", "True"]:
+                for use_feature_loss in ['False', 'True']:
+                    for use_momentum in ['False']:
+                        for attack_type in ['single', 'universal']:
+                            save_dir = f"/data/attacks/res_{model}/{attack_type}/momentum{use_momentum}_di{use_di}_ti{use_ti}_feature{use_feature_loss}_eps13"
+                            if not(os.path.exists(save_dir) and len(os.listdir(save_dir))>=100): 
+                                import pdb; pdb.set_trace()
+                                continue
+                            img_dirs += [save_dir]
+    else:
+        attack_type = args.attack_type
+        use_momentum = args.use_momentum != "False"
+        use_di = args.use_di != "False"
+        use_ti = args.use_ti != "False"
+        use_feature_loss = args.use_feature_loss != "False"
+        img_dirs = [f"/data/attacks/res_{model}/{attack_type}/momentum{use_momentum}_di{use_di}_ti{use_ti}_feature{use_feature_loss}_eps13"]
+    
 
     from parse_tmp import parse_tmp
     tmp_file = "tmp.txt"
