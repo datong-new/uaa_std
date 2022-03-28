@@ -25,6 +25,7 @@ from hooks import ResnetHelper
 
 mean=torch.tensor([0.485,0.456,0.406])
 var=torch.tensor([0.229,0.224,0.225])
+var_ = var.clone()
 VAR = var.mean().item()
 
 class Model():

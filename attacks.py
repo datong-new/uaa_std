@@ -1,5 +1,6 @@
 from db import Model as DB
 from icdar_dataset import ICDARDataset
+from totaltext_dataset import TotalText
 from attack_util import *
 from constant import *
 import argparse
@@ -22,21 +23,26 @@ if __name__ == "__main__":
     parser.add_argument('--use_di', type=str, default="False")
     parser.add_argument('--use_ti', type=str, default="False")
     parser.add_argument('--use_feature_loss', type=str, default="False")
+    parser.add_argument('--dataset_name', type=str, default="icdar2015")
 
     args = parser.parse_args()
     eps = args.eps
 
 
-    dataset = ICDARDataset()
+    if 'icdar' in args.dataset_name:
+        dataset = ICDARDataset()
+    else:
+        dataset = TotalText()
+
     if args.model=="db":
         from db import Model, VAR
-        model = Model("icdar2015")
+        model = Model(args.dataset_name)
     elif args.model=="east":
         from east import Model, VAR
         model = Model()
     elif args.model=="craft":
         from craft_ import Model, VAR
-        model = Model("icdar2015")
+        model = Model(args.dataset_name)
     elif args.model=="textbox":
         from textbox import Model, VAR
         model = Model()
@@ -54,7 +60,8 @@ if __name__ == "__main__":
     res_dir = os.path.join(PWD,
                            "res_{}".format(args.model),
                           attack_type,
-                          "momentum{}_di{}_ti{}_feature{}_eps{}".format(use_momentum, use_di, use_ti,                         use_feature_loss, eps))
+                          "momentum{}_di{}_ti{}_feature{}_eps{}{}".format(use_momentum, use_di, use_ti,                         use_feature_loss, eps,
+                              "" if 'icdar' in args.dataset_name else args.dataset_name))
     eps=eps/255/VAR
     if 'featureTrue' in res_dir:
         os.system("rm -rf {}".format(res_dir))

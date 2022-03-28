@@ -23,6 +23,7 @@ from hooks import VGGHelper
 
 ROOT_PATH = PWD + "CRAFT_pytorch/"
 var =[0.229, 0.224, 0.225]
+var_ = torch.tensor(var)
 VAR = torch.tensor(var).mean().item()
 
 def copyStateDict(state_dict):
