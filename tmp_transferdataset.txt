@@ -1,0 +1,40 @@
+Precision:_0.10703966377725244_______/Recall:_0.36978221415607987_________hmean:_0.16602159299246283
+db: total_text, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.7856079404466502_______/Recall:_0.7182395644283122_________hmean:_0.7504147902346527
+db: total_text, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.816931216931217_______/Recall:_0.7005444646098004_________hmean:_0.7542745481191988
+db: total_text, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.7624932831810854_______/Recall:_0.6438294010889292_________hmean:_0.6981549815498154
+db: total_text, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.8141299193930773_______/Recall:_0.7790381125226861_________hmean:_0.7961975423139347
+db: total_text, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+db: icdar2015, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.001948684637869438, "recall": 0.013392857142857142, "hmean": 0.003402324922030054, "AP": 0}
+db: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.8577586206896551, "recall": 0.44419642857142855, "hmean": 0.5852941176470587, "AP": 0}
+db: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.8353413654618473, "recall": 0.4642857142857143, "hmean": 0.5968436154949786, "AP": 0}
+db: icdar2015, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.7621621621621621, "recall": 0.31473214285714285, "hmean": 0.44549763033175355, "AP": 0}
+db: icdar2015, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.8888888888888888, "recall": 0.6785714285714286, "hmean": 0.769620253164557, "AP": 0}
+Precision:_0.06077722548576593_______/Recall:_0.6102540834845736_________hmean:_0.11054491657762801
+craft: total_text, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.7825428859737639_______/Recall:_0.7037205081669692_________hmean:_0.7410415671285238
+craft: total_text, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.12317636195752539_______/Recall:_0.3026315789473684_________hmean:_0.17508859430371437
+craft: total_text, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.038221300800042525_______/Recall:_0.6524500907441017_________hmean:_0.07221231827654606
+craft: total_text, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+Precision:_0.7980456026058632_______/Recall:_0.7781306715063521_________hmean:_0.7879623248334482
+craft: total_text, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, None
+craft: icdar2015, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.04261690854641788, "recall": 0.41294642857142855, "hmean": 0.07726038839006055, "AP": 0}
+craft: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.4222222222222222, "recall": 0.21205357142857142, "hmean": 0.2823179791976226, "AP": 0}
+craft: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.12440944881889764, "recall": 0.5290178571428571, "hmean": 0.2014449638759031, "AP": 0}
+craft: icdar2015, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.00932582086652419, "recall": 0.5357142857142857, "hmean": 0.01833250582438987, "AP": 0}
+craft: icdar2015, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.8389423076923077, "recall": 0.7790178571428571, "hmean": 0.8078703703703705, "AP": 0}
+textbox: icdar2015, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.32894736842105265, "recall": 0.27901785714285715, "hmean": 0.3019323671497584, "AP": 0}
+textbox: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.8374558303886925, "recall": 0.5290178571428571, "hmean": 0.6484268125854993, "AP": 0}
+textbox: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.7023809523809523, "recall": 0.5267857142857143, "hmean": 0.6020408163265306, "AP": 0}
+textbox: icdar2015, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.1, "recall": 0.020089285714285716, "hmean": 0.033457249070631974, "AP": 0}
+textbox: icdar2015, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.851063829787234, "recall": 0.7142857142857143, "hmean": 0.7766990291262136, "AP": 0}
+east: icdar2015, /data/attacks/res_db/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.0019150472482968638, "recall": 0.13616071428571427, "hmean": 0.0037769728491377974, "AP": 0}
+east: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.02838709677419355, "recall": 0.09821428571428571, "hmean": 0.044044044044044044, "AP": 0}
+east: icdar2015, /data/attacks/res_craft/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13total_text/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.013414416025755679, "recall": 0.16741071428571427, "hmean": 0.024838549428713365, "AP": 0}
+east: icdar2015, /data/attacks/res_textbox/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.0034368197960820256, "recall": 0.13392857142857142, "hmean": 0.0067016642466212455, "AP": 0}
+east: icdar2015, /data/attacks/res_east/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13/perturbation.pt, /data/attacks/tmp_imgs, Calculated!{"precision": 0.1320754716981132, "recall": 0.09375, "hmean": 0.10966057441253264, "AP": 0}

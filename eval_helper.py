@@ -46,14 +46,16 @@ class Eval():
                     poly_str += "%d,%d," % (poly[i][1], poly[i][0])
                 else: 
                     poly_str += "%d,%d," % (poly[i][0], poly[i][1])
+                    try:
+                        line = poly_str.replace("\r","").replace("\n","")
+                        validate_tl_line(line[:-1], LTRB=False,withTranscription=False,withConfidence=False,imWidth=0,imHeight=0)
+                    except Exception as e:
+                        #import pdb; pdb.set_trace()
+                        continue
 
 
-            try:
-                line = poly_str.replace("\r","").replace("\n","")
-                validate_tl_line(line[:-1], LTRB=False,withTranscription=False,withConfidence=False,imWidth=0,imHeight=0)
-            except Exception as e:
-                #import pdb; pdb.set_trace()
-                continue
+
+            line = poly_str.replace("\r","").replace("\n","")
 
             print("save file", os.path.join(save_dir, save_file))
             with open(os.path.join(save_dir, save_file), "a") as f:

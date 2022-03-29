@@ -53,6 +53,7 @@ def TI(grad, gaussian_kernel, kernel_size=5):
     
 
 def generate_universal_examples(model, dataset, perturbation, res_dir):
+    if not os.path.exists(res_dir): os.system("mkdir -p {}".format(res_dir))
     for i in range(0, len(dataset)):
         print("generate universal examples: {}/{}".format(i, len(dataset)))
         item = dataset.__getitem__(i)
