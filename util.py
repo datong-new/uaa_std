@@ -17,7 +17,7 @@ def visualize(mask, save_name, downsample=1):
     #cv2.waitKey(0)
 
 def pert_map(pert, eps):
-    return (1/(1+torch.exp(pert)) -0.5) *2 * eps
+    return (1/(1+torch.exp(pert)) -0.5) *2 * eps[None, :, None, None].to(pert.device)
 
 
 

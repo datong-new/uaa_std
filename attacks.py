@@ -35,16 +35,16 @@ if __name__ == "__main__":
         dataset = TotalText()
 
     if args.model=="db":
-        from db import Model, VAR
+        from db import Model, var_ as VAR
         model = Model(args.dataset_name)
     elif args.model=="east":
-        from east import Model, VAR
+        from east import Model, var_ as VAR
         model = Model()
     elif args.model=="craft":
-        from craft_ import Model, VAR
+        from craft_ import Model, var_ as VAR
         model = Model(args.dataset_name)
     elif args.model=="textbox":
-        from textbox import Model, VAR
+        from textbox import Model, var_ as VAR
         model = Model()
 
 

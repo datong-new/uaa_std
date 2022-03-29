@@ -15,9 +15,10 @@ from torchvision import transforms, utils
 
 #IMG_DIR = "/data/totaltext/totaltext/Images/Test/"
 #LABEL_DIR = "/data/totaltext/txt_format/Test/"
+PWD = os.getcwd()
 
-IMG_DIR = "./dataset/total_text/Test/"
-LABEL_DIR = "./dataset/total_text/txt_format/Test/"
+IMG_DIR = os.path.join(PWD, "dataset/total_text/Test/")
+LABEL_DIR = os.path.join(PWD, "dataset/total_text/txt_format/Test/")
 "/data/totaltext/txt_format/Test/"
 
 def get_poly(line):
