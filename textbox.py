@@ -61,6 +61,7 @@ class Model():
         t = t.squeeze().permute(1,2,0).to(self.device)
         t = (t*var+mean) * 255.0
         img = t.detach().cpu().numpy()
+        img=img.astype(np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         return img
 

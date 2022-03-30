@@ -24,7 +24,7 @@ def get_dataset(dataset_name):
     else:
         return TotalText()
 
-def get_latex(res):
+def get_latex(res_dict):
     target_models = [
             [model_name, dataset_name] 
             for dataset_name in ['icdar2015', 'total_text']
@@ -32,11 +32,38 @@ def get_latex(res):
             ]
     latex_str = ""
 
-    for source_model_name in ['east', 'textbox', 'craft', 'db']:
+    for source_model_name in ['craft', 'db']:
+        latex_str += "\multirow{6}{*}[-4pt]{\\thead{" + source_model_name.upper() + "}}\n"
+
+
         for dataset_name in ['icdar2015', 'total_text']:
-            for target_model in target_models:
-                key = f"{target_model[0]}: {target_model[1]}, /data/attacks/res_{source_model_name}/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13{'' if 'icdar' in dataset_name else 'total_text'}/perturbation.pt, /data/attacks/"
-                if not key in res: print(key)
+            if 'icdar' in dataset_name:
+                latex_str += "& ICDAR &-&-&-&-&-&-\\\\\n" 
+            else:
+                latex_str += "& TotalText &-&-&-&-&-&-\\\\\n" 
+
+            for pert_dataset_name in ['icdar2015', 'total_text']:
+                latex_str += "& {}+{} &".format(
+                        "ICDAR+" if 'icdar' in dataset_name else 'TotalText',
+                        "P_i" if 'icdar' in pert_dataset_name else "P_t")
+                metrics = []
+            
+                for target_model in ['craft', 'db']:
+                    key = f"{target_model}: {dataset_name},{dataset_name}, /data/attacks/res_{source_model_name}/universal/momentumFalse_diFalse_tiFalse_featureFalse_eps13{'' if 'icdar' in pert_dataset_name else 'total_text'}/perturbation.pt, /data/attacks/"
+                    #key = f"{target_model}: {dataset_name},{dataset_name}, /data/attacks/res_{source_model_name}/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13{'' if 'icdar' in pert_dataset_name else 'total_text'}/perturbation.pt, /data/attacks/"
+                    if key in res_dict:
+                        val = res_dict[key]
+
+                        metrics += [val['precision']]
+                        metrics += [val['recall']]
+                        metrics += [val['hmean']]
+                    else:
+                        metrics += [10,10,10]
+
+                metrics = [str(int(item*1000)/1000) if item!=10 else '-' for item in metrics]
+                latex_str += "&".join(metrics)+"\\\\\n"
+        latex_str += "\\midrule\n"
+
     print(latex_str)
 
 
@@ -77,6 +104,7 @@ def parse_tmp(tmp_file=tmp_file):
 
 
 def eval_transferdataset(
+        model_dataset_name,
         dataset_name,
         model_name,
         eval_helper, 
@@ -85,24 +113,26 @@ def eval_transferdataset(
     os.system("rm -rf {}".format(img_dir))
     eval_helper=Eval(dataset_name)
 
-    model = get_model(model_name, dataset_name)
+    model = get_model(model_name, model_dataset_name)
     dataset = get_dataset(dataset_name)
     perturbation = torch.load(perturbation_path)
     #model.generate_universal_examples(dataset, perturbation, img_dir)
     generate_universal_examples(model, dataset, perturbation, img_dir)
     res=eval_helper.eval(model, img_dir, res_dir=os.path.join(os.getcwd(), "tmp_txt")+"/")
-    with open(tmp_file, "a") as f: f.write("{}: {}, {}, {}, {}\n".format(model_name,dataset_name, perturbation_path, img_dir, res))
+                    
+    with open(tmp_file, "a") as f: f.write("{}: {},{}, {}, {}, {}\n".format(model_name,model_dataset_name, dataset_name, perturbation_path, img_dir, res))
 
 
 if __name__=="__main__":
     perturbation_paths = []
-    for model_name in ['db', 'craft', 'textbox', 'east']:
+    for model_name in ['db', 'craft']:
         for dataset_name in ['icdar2015', 'total_text']:
             if dataset_name=='total_text' and model_name in ['textbox', 'east']: continue
             perturbation_paths += [
                     os.path.join(
                         os.getcwd(),
-                        "res_{}/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13{}/perturbation.pt".format(
+                        "res_{}/universal/momentumFalse_diFalse_tiFalse_featureFalse_eps13{}/perturbation.pt".format(
+                        #"res_{}/universal/momentumFalse_diTrue_tiTrue_featureTrue_eps13{}/perturbation.pt".format(
                             model_name,
                             "" if "icdar" in dataset_name else "total_text"
                             )
@@ -114,15 +144,16 @@ if __name__=="__main__":
     import pdb; pdb.set_trace()
     img_dir = os.path.join(os.getcwd(), "tmp_imgs")
 
-    for model_name in ['db', 'craft', 'textbox', 'east']:
-        for dataset_name in ['total_text', 'icdar2015']:
-            if dataset_name=='total_text' and model_name in ['textbox', 'east']: continue
-            for perturbation_path in perturbation_paths:
-                if not os.path.exists(perturbation_path):
-                    print(perturbation_path)
-                    continue
-                #import pdb; pdb.set_trace()
-                if "{}: {}, {}, {}, {}\n".format(model_name,dataset_name, perturbation_path, img_dir, "").split("tmp_imgs,")[0] in res_dict: continue
-                eval_transferdataset(dataset_name, model_name, perturbation_path, img_dir)
+    for model_name in ['db', 'craft']:
+        for model_dataset_name in ['total_text', 'icdar2015']:
+            for dataset_name in ['total_text', 'icdar2015']:
+                if model_dataset_name=='total_text' and model_name in ['textbox', 'east']: continue
+                for perturbation_path in perturbation_paths:
+                    if not os.path.exists(perturbation_path):
+                        print(perturbation_path)
+                        continue
+                    #import pdb; pdb.set_trace()
+                    if "{}: {},{}, {}, {}, {}\n".format(model_name,model_dataset_name,dataset_name, perturbation_path, img_dir, "").split("tmp_imgs,")[0] in res_dict: continue
+                    eval_transferdataset(model_dataset_name, dataset_name, model_name, perturbation_path, img_dir)
         
 

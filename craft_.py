@@ -70,6 +70,7 @@ class Model():
     def tensor_to_image(self, t):
         img = imgproc.denormalize(t)
         img = img.cpu().detach().squeeze().permute(1,2,0).numpy()
+        img=img.astype(np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         return img
      

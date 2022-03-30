@@ -50,6 +50,7 @@ class Model():
         t = (t*std.to(self.device)) + mean.to(self.device)
         t = t * 255.0
         img = t.detach().cpu().numpy()
+        img=img.astype(np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         return img
 
